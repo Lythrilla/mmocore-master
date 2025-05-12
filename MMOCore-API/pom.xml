@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>MMOCore</artifactId>
+        <groupId>net.Indyuce</groupId>
+        <version>1.13.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>MMOCore-API</artifactId>
+
+    <build>
+        <finalName>${project.name}-${project.version}</finalName>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <defaultGoal>clean package install</defaultGoal>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io.papermc.lib</pattern>
+                                    <shadedPattern>net.Indyuce.mmocore.paperlib</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+            This flattens the pom.xml from the API module as well so that it can be uploaded
+            to Nexus. For plugins which have no API/Bukkit differenciation like MythicLib we
+            can just use the main plugin pom.xml file.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <repositories>
+        <repository>
+            <id>local-repo</id>
+            <url>file://${project.basedir}/../repo</url>
+        </repository>
+
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+
+        <repository>
+            <id>lumine</id>
+            <url>https://mvn.lumine.io/repository/maven/</url>
+        </repository>
+
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
+        <repository>
+            <id>sk89q-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
+        </repository>
+
+        <!-- Party and Friends Repository -->
+        <repository>
+            <id>simonsators Repo</id>
+            <url>https://simonsator.de/repo</url>
+        </repository>
+
+        <!-- Heroes Repository
+        <repository>
+            <id>herocraft</id>
+            <url>https://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository> -->
+
+    </repositories>
+
+    <dependencies>
+
+        <!-- Paper API -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Extra libs -->
+        <dependency>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.8</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/paperlib-1.0.8.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Plugin dependencies -->
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.7.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/MythicLib-dist-1.7.1.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>net.playavalon</groupId>
+            <artifactId>MythicDungeons</artifactId>
+            <version>1.4.1-SNAPSHOT-CUSTOM</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.phoenixdevt</groupId>
+            <artifactId>Profile-API</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/PlaceholderAPI-2.11.6.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7.1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
+            <version>7.1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/worldguard-bukkit-7.0.13-dist.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>5.1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/ProtocolLib.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>net.citizensnpcs</groupId>
+            <artifactId>Citizens</artifactId>
+            <version>2.0.30</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Party plugins -->
+        <dependency>
+            <groupId>de.simonsator</groupId>
+            <artifactId>DevelopmentPAFSpigot</artifactId>
+            <version>1.0.239</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/DevelopmentPAFSpigot-1.0.239.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>de.simonsator</groupId>
+            <artifactId>spigot-party-api-for-party-and-friends</artifactId>
+            <version>1.0.7-RELEASE</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/spigot-party-api-for-party-and-friends-1.0.7-RELEASE.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.civious</groupId>
+            <artifactId>OBTeam</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alessiodp</groupId>
+            <artifactId>Parties</artifactId>
+            <version>3.1.14</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gmail.nossr50</groupId>
+            <artifactId>mcMMO</artifactId>
+            <version>2.1.228</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>de.erethon</groupId>
+            <artifactId>DungeonsXL</artifactId>
+            <version>0.18-PRE-02</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/DungeonsXL-0.18-PRE-02.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.herocraftonline</groupId>
+            <artifactId>Heroes</artifactId>
+            <version>1.9.22-SNAPSHOTaaee8ba6</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>de.erethon</groupId>
+            <artifactId>Bedrock</artifactId>
+            <version>1.2.5</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.denizen</groupId>
+            <artifactId>Dungeons</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Quest Plugins -->
+        <dependency>
+            <groupId>me.pikamug.quests</groupId>
+            <artifactId>quests-core</artifactId>
+            <version>5.1.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/quests-core-5.1.4.jar</systemPath>
+            <optional>true</optional>        
+        </dependency>
+
+        <dependency>
+            <groupId>fr.skytasul.quests</groupId>
+            <artifactId>BeautyQuests</artifactId>
+            <version>0.19.5</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.guillaumevdn</groupId>
+            <artifactId>QuestCreator</artifactId>
+            <version>6.39.0</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.guillaumevdn</groupId>
+            <artifactId>GCore</artifactId>
+            <version>8.39.0</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Guild plugins -->
+        <dependency>
+            <groupId>cc.javajobs</groupId>
+            <artifactId>FactionsBridge</artifactId>
+            <version>1.3.6</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.UlrichBR</groupId>
+            <artifactId>UClansV7-API</artifactId>
+            <version>7.13.0-R1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>me.glaremasters</groupId>
+            <artifactId>Guilds</artifactId>
+            <version>3.5.6.0</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kingdoms.main</groupId>
+            <artifactId>Kingdoms</artifactId>
+            <version>1.15.5</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>brigadier</artifactId>
+            <version>1.2.9</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/brigadier-1.2.9.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-chat</artifactId>
+            <version>1.20-R0.2-deprecated+build.18</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/bungeecord-chat-1.20-R0.2.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>MythicLib-dist</artifactId>
+            <version>1.7.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/MythicLib-dist-1.7.1.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>MythicMobs</artifactId>
+            <version>5.8.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/MythicMobs-5.8.2.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>de.simonsator</groupId>
+            <artifactId>Party-and-Friends-MySQL-Edition</artifactId>
+            <version>1.6.2-RELEASE</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/Party-and-Friends-MySQL-Edition-Spigot-API-1.6.2-RELEASE.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-core</artifactId>
+            <version>7.3.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/worldedit-core-7.3.0.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>7.3.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/worldedit-bukkit-7.3.0.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
+    </dependencies>
+
+</project>
