@@ -69,6 +69,9 @@ public class SkillScroller extends SkillCastingHandler {
         if (player.getGameMode() == GameMode.CREATIVE && !MMOCore.plugin.configManager.canCreativeCast)
             return;
 
+        // 检查玩家是否在Chemdah对话中
+        if (net.Indyuce.mmocore.util.PluginCompatibility.isInChemdahConversation(player)) return;
+
         if (event.getPressed() == enterKey) {
 
             // Leave casting mode
@@ -129,6 +132,12 @@ public class SkillScroller extends SkillCastingHandler {
             if (scrollKey == null || event.getPressed() != scrollKey) return;
             if (!event.getData().equals(getCaster())) return;
 
+            // 检查玩家是否在Chemdah对话中
+            if (net.Indyuce.mmocore.util.PluginCompatibility.isInChemdahConversation(event.getPlayer())) {
+                event.setCancelled(true);
+                return;
+            }
+
             event.setCancelled(true);
             scrollOf(1);
         }
@@ -137,6 +146,12 @@ public class SkillScroller extends SkillCastingHandler {
         public void onScroll(PlayerItemHeldEvent event) {
             if (scrollKey != null) return;
             if (!event.getPlayer().equals(getCaster().getPlayer())) return;
+
+            // 检查玩家是否在Chemdah对话中
+            if (net.Indyuce.mmocore.util.PluginCompatibility.isInChemdahConversation(event.getPlayer())) {
+                event.setCancelled(true);
+                return;
+            }
 
             if (!caster.hasActiveSkillBound()) {
                 caster.leaveSkillCasting(true);

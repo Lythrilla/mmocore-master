@@ -12,6 +12,7 @@ import net.Indyuce.mmocore.skill.cast.PlayerKey;
 import net.Indyuce.mmocore.skill.cast.SkillCastingHandler;
 import net.Indyuce.mmocore.skill.cast.SkillCastingInstance;
 import net.Indyuce.mmocore.skill.cast.SkillCastingMode;
+import net.Indyuce.mmocore.util.PluginCompatibility;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -65,6 +66,9 @@ public class SkillBar extends SkillCastingHandler {
     public void enterSkillCasting(PlayerKeyPressEvent event) {
         if (event.getPressed() != mainKey) return;
 
+        // 检查玩家是否在Chemdah对话中
+        if (PluginCompatibility.isInChemdahConversation(event.getPlayer())) return;
+
         // Extra option to improve support with other plugins
         final Player player = event.getPlayer();
         if (disableSneak && player.isSneaking()) return;
@@ -99,6 +103,12 @@ public class SkillBar extends SkillCastingHandler {
         public void onItemHeld(PlayerItemHeldEvent event) {
             if (!event.getPlayer().equals(getCaster().getPlayer())) return;
 
+            // 检查玩家是否在Chemdah对话中
+            if (PluginCompatibility.isInChemdahConversation(event.getPlayer())) {
+                event.setCancelled(true);
+                return;
+            }
+
             // Extra option to improve support with other plugins
             final Player player = event.getPlayer();
             if (disableSneak && player.isSneaking()) return;
@@ -131,6 +141,12 @@ public class SkillBar extends SkillCastingHandler {
             if (!event.getPlayer().equals(getCaster().getPlayer())) return;
 
             if (event.getPressed() != mainKey) return;
+
+            // 检查玩家是否在Chemdah对话中
+            if (PluginCompatibility.isInChemdahConversation(event.getPlayer())) {
+                event.setCancelled(true);
+                return;
+            }
 
             // Extra option to improve support with other plugins
             final Player player = event.getPlayer();

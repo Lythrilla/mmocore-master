@@ -3,6 +3,7 @@ package net.Indyuce.mmocore.listener.event;
 import net.Indyuce.mmocore.api.event.PlayerKeyPressEvent;
 import net.Indyuce.mmocore.api.player.PlayerData;
 import net.Indyuce.mmocore.skill.cast.PlayerKey;
+import net.Indyuce.mmocore.util.PluginCompatibility;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -66,6 +67,12 @@ public class PlayerPressKeyListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void registerSwapHandsKey(PlayerSwapHandItemsEvent event) {
+        // 检查玩家是否在Chemdah对话中
+        if (PluginCompatibility.isInChemdahConversation(event.getPlayer())) {
+            event.setCancelled(true);
+            return;
+        }
+        
         PlayerKeyPressEvent called = new PlayerKeyPressEvent(PlayerData.get(event.getPlayer()), PlayerKey.SWAP_HANDS, event);
         Bukkit.getPluginManager().callEvent(called);
     }

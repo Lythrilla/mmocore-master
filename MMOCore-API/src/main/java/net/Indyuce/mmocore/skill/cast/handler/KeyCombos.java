@@ -87,6 +87,9 @@ public class KeyCombos extends SkillCastingHandler {
         Player player = playerData.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE && !MMOCore.plugin.configManager.canCreativeCast) return;
 
+        // 检查玩家是否在Chemdah对话中
+        if (net.Indyuce.mmocore.util.PluginCompatibility.isInChemdahConversation(player)) return;
+
         // Don't start combos if no skills are bound
         if (!playerData.hasActiveSkillBound()) return;
 

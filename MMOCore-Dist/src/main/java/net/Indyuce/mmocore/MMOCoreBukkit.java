@@ -9,6 +9,18 @@ import net.Indyuce.mmocore.listener.profession.FishingListener;
 import net.Indyuce.mmocore.listener.profession.PlayerCollectStats;
 import org.bukkit.Bukkit;
 
+/**
+ * MMOCore - Advanced RPG plugin for Spigot servers
+ * 
+ * Originally developed by Indyuce
+ * 
+ * Modified and extended by Lythrilla (2025)
+ * Website: https://lythrilla.cn
+ * QQ: 3824670178
+ * Last Update: 2025/05/12
+ * 
+ * This version includes Chemdah integration and various performance optimizations
+ */
 public class MMOCoreBukkit {
 
     /**
@@ -16,6 +28,14 @@ public class MMOCoreBukkit {
      * all the listeners required for MMOCore to run
      */
     public MMOCoreBukkit(MMOCore plugin) {
+        // Log developer information
+        plugin.getLogger().info("§e---------------------------------------------");
+        plugin.getLogger().info("§bMMOCore §7- §aLythrilla 二次开发");
+        plugin.getLogger().info("§7Website: §6https://lythrilla.cn");
+        plugin.getLogger().info("§7QQ: §63824670178");
+        plugin.getLogger().info("§7Version: §61.13.1-SNAPSHOT §7(2025/05/12)");
+        plugin.getLogger().info("§e---------------------------------------------");
+        
         if (plugin.configManager.overrideVanillaExp)
             Bukkit.getPluginManager().registerEvents(new VanillaExperienceOverride(), plugin);
 
