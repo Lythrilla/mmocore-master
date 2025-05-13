@@ -67,7 +67,7 @@
         <dependency>
             <groupId>net.Indyuce</groupId>
             <artifactId>MMOCore-API</artifactId>
-            <version>1.13.1-SNAPSHOT</version>
+            <version>1.13.1-SNAPSHOT-Lythrilla</version>
             <optional>true</optional>
         </dependency>
 
