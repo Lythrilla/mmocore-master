@@ -1,0 +1,83 @@
+name: Build MMOCore
+
+on:
+  push:
+    branches: [ main, master, dev ]
+  pull_request:
+    branches: [ main, master ]
+  # 允许手动触发工作流
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        java: [ '21' ]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: 设置JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'zulu'
+          cache: 'maven'
+      
+      - name: 构建项目
+        run: mvn -B clean package
+      
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v3
+        with:
+          name: MMOCore-${{ github.sha }}
+          path: target/MMOCore-*.jar
+          
+  # Windows构建
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: 设置JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+          cache: 'maven'
+      
+      - name: 构建项目 (Windows)
+        run: mvn -B clean package
+      
+      - name: 上传构建产物 (Windows)
+        uses: actions/upload-artifact@v3
+        with:
+          name: MMOCore-windows-${{ github.sha }}
+          path: target/MMOCore-*.jar
+
+  # 发布版本
+  release:
+    needs: [build, build-windows]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: 下载构建产物
+        uses: actions/download-artifact@v3
+        with:
+          name: MMOCore-${{ github.sha }}
+          path: dist
+      
+      - name: 创建发布
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/MMOCore-*.jar
+          name: MMOCore ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true 
