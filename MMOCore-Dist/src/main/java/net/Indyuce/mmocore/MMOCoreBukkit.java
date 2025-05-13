@@ -22,19 +22,26 @@ import org.bukkit.Bukkit;
  * This version includes Chemdah integration and various performance optimizations
  */
 public class MMOCoreBukkit {
+    // 控制台颜色常量
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_BOLD = "\u001B[1m";
+    private static final String ANSI_BRIGHT_GREEN = "\u001B[92m";
+    private static final String ANSI_BRIGHT_CYAN = "\u001B[96m";
 
     /**
      * Called when MMOCore enables. This registers
      * all the listeners required for MMOCore to run
      */
     public MMOCoreBukkit(MMOCore plugin) {
-        // Log developer information
-        plugin.getLogger().info("§e---------------------------------------------");
-        plugin.getLogger().info("§bMMOCore §7- §aLythrilla 二次开发");
-        plugin.getLogger().info("§7Website: §6https://lythrilla.cn");
-        plugin.getLogger().info("§7QQ: §63824670178");
-        plugin.getLogger().info("§7Version: §61.13.1-SNAPSHOT §7(2025/05/12)");
-        plugin.getLogger().info("§e---------------------------------------------");
+        // 检测Chemdah插件是否存在
+        if (Bukkit.getPluginManager().getPlugin("Chemdah") != null) {
+            plugin.getLogger().info("Hooked Chemdah onto MMOCore");
+        }
+        
+        // 输出开发者信息
+        plugin.getLogger().info(ANSI_BOLD + ANSI_BRIGHT_CYAN + "MMOCore" + ANSI_RESET + " - " + ANSI_BRIGHT_GREEN + "Modified Lythrilla" + ANSI_RESET);
+        plugin.getLogger().info("QQ: 3824670178");
+        plugin.getLogger().info("Version: 1.13.1-SNAPSHOT-Lythrilla (2025/05/12)");
         
         if (plugin.configManager.overrideVanillaExp)
             Bukkit.getPluginManager().registerEvents(new VanillaExperienceOverride(), plugin);
